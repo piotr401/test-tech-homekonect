@@ -1,0 +1,87 @@
+{% extends "@Front/layout.html.twig" %}
+
+{% block content %}
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col"> </th>
+                            <th scope="col">Product</th>
+                            <th scope="col" class="text-right">Price</th>
+                            <th scope="col" class="text-center">Quantity</th>
+                            <th scope="col" class="text-right">Total</th>
+                            <th> </th>
+                        </tr>
+                        </thead>
+                        <tbody class="products-section" data-url="{{ path('manage_cart') }}">
+
+                        {% if cart is not empty %}
+                            {% for ref, product in cart %}
+                                {% if ref != 'total' and ref != 'totalQuantity' %}
+
+                                <tr class="product-{{ ref }}">
+                                    <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
+                                    <td>{{ product.title }}</td>
+                                    <td class="text-right">{{ product.price }} €</td>
+                                    <td style="display: flex;">
+                                        <button class="btn btn-sm btn-default remove-product" data-ref="{{ ref }}"><i class="fa fa-minus-square"></i></button>
+                                        <input style="text-align: center;" class="form-control product-amount-{{ ref }}" data-price="{{ product.price }}" type="number" value="{{ product.quantity }}" min="1" max="10" disabled />
+                                        <button class="btn btn-sm btn-default add-product" data-ref="{{ ref }}"><i class="fa fa-plus-square"></i> </button>
+                                    </td>
+                                    <td class="text-right"><span class="product-total product-total-{{ ref }}">{{ product.prodTotal|number_format(2) }}</span> €</td>
+                                    <td class="text-right"><button class="btn btn-sm btn-danger delete-product" data-ref="{{ ref }}"><i class="fa fa-trash"></i> </button> </td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total</strong></td>
+                            <td class="text-right"><strong><span class="cart-total">{% if cart is not empty %}{{ cart.total|number_format(2) }}{% else %}0{% endif %}</span> €</strong></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col mb-2">
+                <div class="row">
+                    <div class="col-sm-12  col-md-6">
+                        <a href="{{ path('product_list') }}" class="btn btn-block btn-light">Continue Shopping</a>
+                    </div>
+                    <div class="col-sm-12 col-md-6 text-right">
+                        <a href="#" class="btn btn-lg btn-block btn-success text-uppercase">Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        /*$(document).on('click', '.add-product', function (e) {
+          let ref = $(this).data('ref');
+          let input = $('.product-amount-'+ref);
+          let value = input.val();
+
+          if (value < 10) {
+            input.val(value + 1);
+          }
+        })
+        $(document).on('click', '.remove-product', function (e) {
+          let ref = $(this).data('ref');
+          let input = $('.product-amount-'+ref);
+          let value = input.val();
+
+          if (value > 1) {
+            input.val(value - 1);
+          }
+        })*/
+    </script>
+
+{% endblock %}

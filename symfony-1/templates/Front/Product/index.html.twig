@@ -1,0 +1,21 @@
+{% extends "@Front/layout.html.twig" %}
+
+{% block content %}
+
+    <div class="row products-section" data-url="{{ path('manage_cart') }}">
+
+        {% for product in products %}
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box" style="border-radius: .25rem;box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);display: block;margin-bottom: 20px;position: relative;">
+                    <div class="inner">
+                        <h3>{{ product.title }}</h3>
+
+                        <p>Prix : {{ product.price }} €</p>
+                    </div>
+                    <a data-ref="{{ product.ref }}" class="add-product" href="#" style="background: rgba(0,0,0,.1);color: rgba(255,255,255,.8);display: block;padding: 3px 0;position: relative;text-align: center;text-decoration: none;z-index: 10;">Ajouter au panier</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
