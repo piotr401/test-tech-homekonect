@@ -21,7 +21,7 @@
 
                         {% if cart is not empty %}
                             {% for ref, product in cart %}
-                                {% if ref != 'total' and ref != 'totalQuantity' %}
+
 
                                 <tr class="product-{{ ref }}">
                                     <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
@@ -29,13 +29,13 @@
                                     <td class="text-right">{{ product.price }} €</td>
                                     <td style="display: flex;">
                                         <button class="btn btn-sm btn-default remove-product" data-ref="{{ ref }}"><i class="fa fa-minus-square"></i></button>
-                                        <input style="text-align: center;" class="form-control product-amount-{{ ref }}" data-price="{{ product.price }}" type="number" value="{{ product.quantity }}" min="1" max="10" disabled />
+                                        <input style="text-align: center;" class="form-control product-amount-{{ ref }}" data-price="{{ product.price }}" type="number" value="{{ product.quantity }}" min="1" disabled />
                                         <button class="btn btn-sm btn-default add-product" data-ref="{{ ref }}"><i class="fa fa-plus-square"></i> </button>
                                     </td>
                                     <td class="text-right"><span class="product-total product-total-{{ ref }}">{{ product.prodTotal|number_format(2) }}</span> €</td>
                                     <td class="text-right"><button class="btn btn-sm btn-danger delete-product" data-ref="{{ ref }}"><i class="fa fa-trash"></i> </button> </td>
                                 </tr>
-                                {% endif %}
+
                             {% endfor %}
                         {% endif %}
 
@@ -45,7 +45,7 @@
                             <td></td>
                             <td></td>
                             <td><strong>Total</strong></td>
-                            <td class="text-right"><strong><span class="cart-total">{% if cart is not empty %}{{ cart.total|number_format(2) }}{% else %}0{% endif %}</span> €</strong></td>
+                            <td class="text-right"><strong><span class="cart-total">{% if info is not empty %}{{ info.total|number_format(2) }}{% else %}0{% endif %}</span> €</strong></td>
                         </tr>
                         </tbody>
                     </table>
