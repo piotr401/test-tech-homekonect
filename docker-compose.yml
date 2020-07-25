@@ -1,0 +1,61 @@
+version: '3.2'
+services:
+
+    #############
+    # Databases #
+    #############
+
+    # Mysql
+    db:
+        image: mysql:8.0
+        volumes:
+        - ./docker/datas/mysql:/var/lib/mysql
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+        - '3306:3306'
+        environment:
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_ALLOW_EMPTY_PASSWORD=false
+
+    #######
+    # PHP #
+    #######
+
+    # Php 7
+    php:
+        build:
+            context: ./docker/php7-fpm
+            args:
+                APP_PROJECT_DIR_NAME: ${APP_PROJECT_DIR_NAME}
+        ports:
+        - '9000:9000'
+        volumes:
+        - ./symfony:/var/www/project/${APP_PROJECT_DIR_NAME}:cached
+        links:
+        - db:db-host
+        env_file: symfony/.env
+
+    ###########
+    # Servers #
+    ###########
+
+    # Nginx
+    nginx:
+        build:
+            context: ./docker/nginx
+        environment:
+            APP_SERVER_NAME: ${APP_SERVER_NAME}
+            APP_PROJECT_DIR_NAME: ${APP_PROJECT_DIR_NAME}
+            APP_SYMFONY_ENV: ${APP_ENV}
+        ports:
+        - '80:80'
+        - '443:443'
+        links:
+        - php:php-host
+        volumes:
+        - ./docker/nginx/letsencrypt:/etc/nginx/letsencrypt
+        - ./docker/nginx/hosts/vhost.conf:/etc/nginx/vhost.conf
+        - ./symfony/var/log/nginx:/var/log/nginx
+        - ./symfony/var:/var/www/project/${APP_PROJECT_DIR_NAME}/var:cached
+        - ./symfony/public:/var/www/project/${APP_PROJECT_DIR_NAME}/public:cached
